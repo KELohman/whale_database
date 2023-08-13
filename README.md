@@ -1,2 +1,2 @@
 # whale_database
-Example SQL databases full of real code and imaginary whales
+Examples of SQL databases full of real code and imaginary whales 🐋
