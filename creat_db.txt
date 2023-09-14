@@ -1,0 +1,68 @@
+
+CREATE TABLE [sightings] (
+    [SightingID] char(7)  NOT NULL ,
+    [Date] date  NOT NULL ,
+    [Species] char(3)  NOT NULL ,
+    [Lat] int  NOT NULL ,
+    [Long] int  NOT NULL ,
+    [BehaviorClass] varchar(20)  NOT NULL ,
+    [PoopSampleID] char(3)  NOT NULL ,
+    [TissueSampleID] char(3)  NOT NULL ,
+    [PhotographID] char(3)  NOT NULL ,
+    [GroupSize] int  NOT NULL ,
+    CONSTRAINT [PK_sightings] PRIMARY KEY CLUSTERED (
+        [SightingID] ASC
+    ),
+    CONSTRAINT [UK_sightings_PoopSampleID] UNIQUE (
+        [PoopSampleID]
+    ),
+    CONSTRAINT [UK_sightings_TissueSampleID] UNIQUE (
+        [TissueSampleID]
+    ),
+    CONSTRAINT [UK_sightings_PhotographID] UNIQUE (
+        [PhotographID]
+    )
+)
+
+CREATE TABLE [tissues] (
+    [TissueSampleID] char(3)  NOT NULL ,
+    [Sex] char  NOT NULL ,
+    [Haplotype] char  NOT NULL ,
+    CONSTRAINT [PK_tissues] PRIMARY KEY CLUSTERED (
+        [TissueSampleID] ASC
+    )
+)
+
+CREATE TABLE [photos] (
+    [PhotographID] char(3)  NOT NULL ,
+    [PhotoQuality] char(4)  NOT NULL ,
+    [AnimalID] varchar(6)  NOT NULL ,
+    [EntanglementScarRating] int  NOT NULL ,
+    CONSTRAINT [PK_photos] PRIMARY KEY CLUSTERED (
+        [PhotographID] ASC
+    )
+)
+
+CREATE TABLE [poops] (
+    [PoopSampleID] char(3)  NOT NULL ,
+    [StressHormoneLevel] int  NOT NULL ,
+    [PlasticLevel] int  NOT NULL ,
+    CONSTRAINT [PK_poops] PRIMARY KEY CLUSTERED (
+        [PoopSampleID] ASC
+    )
+)
+
+ALTER TABLE [sightings] WITH CHECK ADD CONSTRAINT [FK_sightings_PoopSampleID] FOREIGN KEY([PoopSampleID])
+REFERENCES [poops] ([PoopSampleID])
+
+ALTER TABLE [sightings] CHECK CONSTRAINT [FK_sightings_PoopSampleID]
+
+ALTER TABLE [sightings] WITH CHECK ADD CONSTRAINT [FK_sightings_TissueSampleID] FOREIGN KEY([TissueSampleID])
+REFERENCES [tissues] ([TissueSampleID])
+
+ALTER TABLE [sightings] CHECK CONSTRAINT [FK_sightings_TissueSampleID]
+
+ALTER TABLE [sightings] WITH CHECK ADD CONSTRAINT [FK_sightings_PhotographID] FOREIGN KEY([PhotographID])
+REFERENCES [photos] ([PhotographID])
+
+ALTER TABLE [sightings] CHECK CONSTRAINT [FK_sightings_PhotographID]
